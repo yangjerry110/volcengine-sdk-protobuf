@@ -1,0 +1,361 @@
+syntax = "proto3";
+package redis_instance;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+
+service RedisInstance {
+    // DescribeDBInstances
+    rpc RedisDescribeDBInstances(RedisDescribeDBInstancesReq) returns (RedisDescribeDBInstancesResp) {
+        option (api.http) = {
+            get: "/api/redis_instance/describe_db_instances"
+            description: "DescribeDBInstances"
+        };
+    }
+
+    // CreateDBInstance
+    rpc RedisCreateDBInstance(RedisCreateDBInstanceReq) returns (RedisCreateDBInstanceResp) {
+        option (api.http) = {
+            post: "/api/redis_instance/create_db_instance"
+            body: "*"
+            description: "CreateDBInstance"
+        };
+    }
+
+    // DescribeDBInstanceDetail
+    rpc RedisDescribeDBInstanceDetail(RedisDescribeDBInstanceDetailReq) returns (RedisDescribeDBInstanceDetailResp) {
+        option (api.http) = {
+            get: "/api/redis_instance/describe_db_instance_detail"
+            description: "DescribeDBInstanceDetail"
+        };
+    }
+
+    // IncreaseDBInstanceNodeNumber
+    rpc RedisIncreaseDBInstanceNodeNumber(RedisIncreaseDBInstanceNodeNumberReq) returns (RedisIncreaseDBInstanceNodeNumberResp) {
+        option (api.http) = {
+            post: "/api/rds_instance/in_crease_db_instance_db_number"
+            body: "*"
+            description: "为目标 Redis 实例增加单分片节点数量"
+        };
+    }
+
+    // DecreaseDBInstanceNodeNumber
+    rpc RedisDecreaseDBInstanceNodeNumber(RedisDecreaseDBInstanceNodeNumberReq) returns (RedisDecreaseDBInstanceNodeNumberResp) {
+        option (api.http) = {
+            post: "/api/rds_instance/de_crease_db_instance_db_number"
+            body: "*"
+            description: "为目标 Redis 实例减少单分片节点数量" 
+        };
+    }
+
+    // ModifyDBInstanceShardCapacity
+    rpc RedisModifyDBInstanceShardCapacity(RedisModifyDBInstanceShardCapacityReq) returns (RedisModifyDBInstanceShardCapacityResp) {
+        option (api.http) = {
+            post: "/api/rds_instance/modify_db_instance_shard_capacity"
+            body: "*"
+            description: "修改目标 Redis 实例的单分片内存容量"
+        };
+    }
+
+    // ModifyDBInstanceShardNumber
+    rpc RedisModifyDBInstanceShardNumber(RedisModifyDBInstanceShardNumberReq) returns (RedisModifyDBInstanceShardNumberResp) {
+        option (api.http) = {
+            post: "/api/rds_instance/modify_db_instance_shard_number"
+            body: "*"
+            description: "修改目标 Redis 实例的分片数量"
+        };
+    }
+
+    // EnableShardedCluster
+    rpc RedisEnableShardedCluster(RedisEnableShardedClusterReq) returns (RedisEnableShardedClusterResp) {
+        option (api.http) = {
+            post: "/api/rds_instance/enable_sharded_cluster"
+            body: "*"
+            description: "将目标 Redis 实例变更为启用分片集群实例"
+        };
+    }
+}
+
+message RedisDescribeDBInstancesReq {
+    optional int64 PageNumber = 1;
+    optional int64 PageSize = 2;
+    optional string RegionId = 3;
+    optional string ZoneId = 4;
+    optional string InstanceId = 5;
+    optional string InstanceName = 6;
+    optional int64 ShardedCluster = 7;
+    optional string Status = 8;
+    optional string EngineVersion = 9;
+    optional string VpcId = 10;
+    optional string ChargeType = 11;
+    optional string ProjectName = 12;
+    optional string ServiceType = 13;
+    optional string DataLayout = 14;
+    repeated RedisDescribeDBInstancesTagReq TagFilters = 15;
+}
+
+message RedisDescribeDBInstancesTagReq {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message RedisDescribeDBInstancesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RedisDescribeDBInstancesResultResp Result = 2;
+}
+
+message RedisDescribeDBInstancesResultResp {
+    optional int64 TotalInstancesNum = 1;
+    repeated RedisDescribeDBInstancesResultInstanceResp Instances = 2;
+}
+
+message RedisDescribeDBInstancesResultInstanceResp {
+    optional string ChargeType = 1;
+    optional string CreateTime = 2;
+    optional string DeletionProtection = 3;
+    optional string EngineVersion = 4;
+    optional string ExpiredTime = 5;
+    optional string InstanceId = 6;
+    optional string InstanceName = 7;
+    optional string ProjectName = 8;
+    optional string RegionId = 9;
+    optional string Status = 10;
+    optional string MultiAZ = 11;
+    optional string VpcId = 12;
+    optional int64 NodeNumber = 13;
+    optional int64 ShardCapacity = 14;
+    optional int64 ShardNumber = 15;
+    optional int64 ShardedCluster = 16;
+    optional string InstanceClass = 17;
+    optional string ServiceType = 18;
+    optional string DataLayout = 19;
+    optional string PrivateAddress = 20;
+    optional string VIP = 21;
+    optional string VIPv6 = 22;
+    RedisDescribeDBInstancesResultInstanceCapacityResp Capacity = 23;
+    repeated string ZoneIds = 24;
+    repeated RedisDescribeDBInstanceDetailResultTagResp Tags = 25;
+}
+
+message RedisDescribeDBInstancesResultInstanceTagResp {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message RedisDescribeDBInstancesResultInstanceCapacityResp {
+    optional int64 Used = 1;
+    optional int64 Total = 2;
+}
+
+message RedisDescribeDBInstanceDetailReq {
+    string InstanceId = 1;
+}
+
+message RedisDescribeDBInstanceDetailResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RedisDescribeDBInstanceDetailResultResp Result = 2;
+}
+
+message RedisDescribeDBInstanceDetailResultResp {
+    string RegionId = 1;
+    string InstanceName = 2;
+    string InstanceId = 3;
+    string Status = 4;
+    string EngineVersion = 5;
+    int64 ShardedCluster = 6;
+    int64 NodeNumber = 7;
+    int64 ShardNumber = 8;
+    int64 ShardCapacityV2 = 9;
+    string VpcId = 10;
+    string SubnetId = 11;
+    string CreateTime = 12;
+    string MaintenanceTime = 13;
+    string ExpiredTime = 14;
+    string ProjectName = 15;
+    string DeletionProtection = 16;
+    string VpcAuthMode = 17;
+    string InstanceClass = 18;
+    string MultiAZ = 19;
+    string ChargeType = 20;
+    bool AutoRenew = 21;
+    int64 MaxConnections = 22;
+    string DataLayout = 23;
+    RedisDescribeDBInstanceDetailResultCapacityResp Capacity = 24;
+    repeated string ZoneIds = 25;
+    repeated RedisDescribeDBInstanceDetailResultVisitAddrResp VisitAddrs = 26;
+    repeated RedisDescribeDBInstanceDetailResultTagResp Tags = 27;
+}
+
+message RedisDescribeDBInstanceDetailResultTagResp {
+    string Key = 1;
+    string Value = 2;
+}
+
+message RedisDescribeDBInstanceDetailResultVisitAddrResp {
+    string Port = 1;
+    string EipId = 2;
+    string Address = 3;
+    string AddrType = 4;
+    string VIP = 5;
+    string VIPv6 = 6;
+}
+
+message RedisDescribeDBInstanceDetailResultCapacityResp {
+    int64 Used = 1;
+    int64 Total = 2;
+}
+
+message RedisCreateDBInstanceReq {
+    string RegionId = 1;
+    string EngineVersion = 2;
+    int64 ShardedCluster = 3;
+    int64 ShardNumber = 4;
+    int64 NodeNumber = 5;
+    int64 ShardCapacity = 6;
+    string MultiAZ = 7;
+    string VpcId = 8;
+    string SubnetId = 9;
+    string InstanceName = 10;
+    string Password = 11;
+    int64 Port = 12;
+    string ProjectName = 13;
+    string ChargeType = 14;
+    int64 PurchaseMonths = 15;
+    bool AutoRenew = 16;
+    string DeletionProtection = 17;
+    string ClientToken = 18;
+    repeated string AllowListIds = 19;
+    repeated RedisCreateDBInstanceConfigureNodeReq ConfigureNodes = 20;
+    repeated RedisCreateDBInstanceTagReq Tags = 21;
+}
+
+message RedisCreateDBInstanceTagReq {
+    string Key = 1;
+    string Value = 2;
+}
+
+message RedisCreateDBInstanceConfigureNodeReq {
+    string AZ = 1;
+}
+
+message RedisCreateDBInstanceResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RedisCreateDBInstanceResultResp Result = 2;
+}
+
+message RedisCreateDBInstanceResultResp {
+    string OrderNO = 1;
+    string InstanceId = 2;
+}
+
+message RedisIncreaseDBInstanceNodeNumberReq {
+    optional string InstanceId = 1;
+    optional bool ApplyImmediately = 2;
+    optional int64 NodesNumberToIncrease = 3;
+    optional bool CreateBackup = 4;
+    optional string BackupPointName = 5;
+    optional string ClientToken = 6;
+    repeated RedisIncreaseDBInstanceNodeNumberConfigureNewNodeReq ConfigureNewNodes = 7;
+}
+
+message RedisIncreaseDBInstanceNodeNumberConfigureNewNodeReq {
+    optional string AZ = 1;
+}
+
+message RedisIncreaseDBInstanceNodeNumberResultResp {
+    optional string OrderNO = 1;
+} 
+
+message RedisIncreaseDBInstanceNodeNumberResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RedisIncreaseDBInstanceNodeNumberResultResp Result = 2;
+}
+
+message RedisDecreaseDBInstanceNodeNumberReq {
+    optional string InstanceId = 1;
+    optional bool ApplyImmediately = 2;
+    optional int64 NodesNumberToIncrease = 3;
+    optional bool CreateBackup = 4;
+    optional string BackupPointName = 5;
+    optional string ClientToken = 6;
+    repeated RedisIncreaseDBInstanceNodeNumberConfigureNewNodeReq ConfigureNewNodes = 7;
+}
+
+message RedisDecreaseDBInstanceNodeNumberResultResp {
+    optional string OrderNO = 1;
+} 
+
+message RedisDecreaseDBInstanceNodeNumberResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RedisDecreaseDBInstanceNodeNumberResultResp Result = 2;
+}
+
+message RedisModifyDBInstanceShardCapacityReq {
+    optional string InstanceId = 1;
+    optional bool ApplyImmediately = 2;
+    optional int64 ShardCapacity = 3;
+    optional bool CreateBackup = 4;
+    optional string BackupPointName = 5;
+    optional string ClientToken = 6;
+}
+
+message RedisModifyDBInstanceShardCapacityResultResp {
+    optional string OrderNO = 1;
+} 
+
+message RedisModifyDBInstanceShardCapacityResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RedisModifyDBInstanceShardCapacityResultResp Result = 2;
+}
+
+message RedisModifyDBInstanceShardNumberReq {
+    optional string InstanceId = 1;
+    optional bool ApplyImmediately = 2;
+    optional int64 ShardNumber = 3;
+    optional bool CreateBackup = 4;
+    optional string BackupPointName = 5;
+    optional string ClientToken = 6;
+}
+
+message RedisModifyDBInstanceShardNumberResultResp {
+    optional string OrderNO = 1;
+} 
+
+message RedisModifyDBInstanceShardNumberResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RedisModifyDBInstanceShardNumberResultResp Result = 2;
+}
+
+message RedisEnableShardedClusterReq {
+    optional string InstanceId = 1;
+    optional bool ApplyImmediately = 2;
+    optional int64 ShardNumber = 3;
+    optional int64 ShardedCluster = 4;
+    optional int64 ShardCapacity = 5;
+    optional bool CreateBackup = 6;
+    optional string BackupPointName = 7;
+    optional string ClientToken = 8;
+}
+
+message RedisEnableShardedClusterResultResp {
+    optional string OrderNO = 1;
+} 
+
+message RedisEnableShardedClusterResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RedisEnableShardedClusterResultResp Result = 2;
+}
+
+message ResponseMetadata {
+	string RequestId = 1;
+	string Action = 2;
+	string Version = 3;
+	string Service = 4;
+	string Region = 5;
+	ResponseMetadataErr Error = 6;
+}
+
+message ResponseMetadataErr {
+	optional int64 CodeN = 1;
+	string Code = 2;
+	string Message = 3;
+}

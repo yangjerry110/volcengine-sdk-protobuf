@@ -1,0 +1,74 @@
+syntax = "proto3";
+package rds_database;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service RdsDataBase {
+    // CreateDatabase
+    rpc CreateDatabase(CreateDatabaseReq) returns (CreateDatabaseResp) {
+        option (api.http) = {
+            post: "/api/rds_database/create_database"
+            body: "*"
+            description: "CreateDatabase"
+        };
+    }
+
+    // DescribeDatabases
+    rpc DescribeDatabases(DescribeDatabasesReq) returns (DescribeDatabasesResp) {
+        option (api.http) = {
+            get: "/api/rds_database/describe_databases"
+            description: "DescribeDatabases"
+        };
+    }
+}
+
+message DescribeDatabasesReq {
+    optional string InstanceId = 1;
+    optional string DBName = 2;
+    optional int64 PageSize = 3;
+    optional int64 PageNumber = 4;
+}
+
+message DescribeDatabasesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeDatabasesResultResp Result = 2;
+}
+
+message DescribeDatabasesResultResp {
+    optional int64 Total = 1;
+    repeated DescribeDatabasesResultDatabaseResp Databases = 2;
+}
+
+message DescribeDatabasesResultDatabaseResp {
+    optional string DBName = 1;
+    optional string CharacterSetName = 2;
+    optional string DBDesc = 3;
+    optional string DBStatus = 4;
+    repeated DescribeDatabasesResultDatabasePrivilegeResp DatabasePrivileges = 5;
+}
+
+message DescribeDatabasesResultDatabasePrivilegeResp {
+    optional string AccountName = 1;
+    optional string Host = 2;
+    optional string AccountPrivilege = 3;
+    optional string AccountPrivilegeDetail = 4;
+}
+
+message CreateDatabaseReq {
+    optional string InstanceId = 1;
+    optional string DBName = 2;
+    optional string CharacterSetName = 3;
+    optional string DBDesc = 4;
+    repeated CreateDatabasePrivilegesReq DatabasePrivileges = 5;
+}
+
+message CreateDatabasePrivilegesReq {
+    optional string DBName = 1;
+    optional string AccountPrivilege = 2;
+    optional string AccountPrivilegeDetail = 3;
+}
+
+message CreateDatabaseResp {
+    ResponseMetadata ResponseMetadata = 1;
+}

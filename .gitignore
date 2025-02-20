@@ -1,0 +1,6 @@
+/target
+/vo
+main.go
+go.mod
+go.sum
+build.rs

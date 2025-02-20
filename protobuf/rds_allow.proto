@@ -1,0 +1,41 @@
+syntax = "proto3";
+package rds_allow;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service RdsAllow {
+    // ModifyAllowList
+    rpc ModifyAllowList(ModifyAllowListReq) returns (ModifyAllowListResp) {
+        option (api.http) = {
+            post: "/api/rds_allow/modify_allow_list"
+            body: "*"
+            description: "ModifyAllowList"
+        };
+    }
+}
+
+message ModifyAllowListReq {
+    string AllowListId = 1;
+    string AllowListName = 2;
+    string ModifyMode = 3;
+    string AllowListDesc = 4;
+    string AllowList = 5;
+    int64 ApplyInstanceNum = 6;
+    string SecurityGroupName = 7;
+    string AllowListCategory = 8;
+    string UserAllowList = 9;
+    bool UpdateSecurityGroup = 10;
+    repeated string SecurityGroupIds = 11;
+    repeated ModifyAllowListSecurityGroupBindInfoReq SecurityGroupBindInfos = 12;
+}
+
+message ModifyAllowListSecurityGroupBindInfoReq {
+    string BindMode = 1;
+    string SecurityGroupId = 2;
+    repeated string IpList = 3;
+}
+
+message ModifyAllowListResp {
+    ResponseMetadata ResponseMetadata = 1;
+}

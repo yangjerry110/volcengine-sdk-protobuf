@@ -1,0 +1,26 @@
+syntax = "proto3";
+package app_config;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+
+service AppConfig {
+    // set appConfig
+    rpc SetAppConfig(SetAppConfigReq) returns (SetAppConfigResp) {
+        option (api.http) = {
+            post: "/api/app_config/set_app_config"
+            body: "*"
+            description: "set app config"
+        };
+    }
+}
+
+message SetAppConfigReq {
+    string app_name = 1;
+    string region_id = 2;
+}
+
+message SetAppConfigResp {
+    int64 retCode = 1;
+    string retMsg = 2;
+    bool retResult = 3;
+}

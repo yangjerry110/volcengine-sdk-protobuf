@@ -1,0 +1,70 @@
+syntax = "proto3";
+package iam_project;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service IamProject {
+    // CreateProject
+    rpc CreateProject(CreateProjectReq) returns (CreateProjectResp) {
+        option (api.http) = {
+            post: "/api/iam_project/create_project"
+            body: "*"
+            description: "CreateProject"
+        };
+    }
+
+    // GetProject
+    rpc GetProject(GetProjectReq) returns (GetProjectResp) {
+        option (api.http) = {
+            get: "/api/iam_project/get_project"
+            description: "GetProject"
+        };
+    }
+}
+
+message GetProjectReq {
+    string ProjectName = 1;
+}
+
+message GetProjectResp {
+    ResponseMetadata ResponseMetadata = 1;
+    GetProjectResultResp Result = 2;
+}
+
+message GetProjectResultResp {
+    optional int64 Id = 1;
+    optional string CreateDate = 2;
+    optional string UpdateDate = 3;
+    optional string Status = 4;
+    optional string ProjectName = 5;
+    optional string Description = 6;
+    optional string ParentProjectName = 7;
+    optional string Path = 8;
+    optional string DisplayName = 9;
+}
+
+message CreateProjectReq {
+    optional string DisplayName = 1;
+    optional string ProjectName = 2;
+    optional string Description = 3;
+    optional string ParentProjectName = 4;
+}
+
+message CreateProjectResp {
+    ResponseMetadata ResponseMetadata = 1;
+    CreateProjectResultResp Result = 2;
+}
+
+message CreateProjectResultResp {
+    CreateProjectResultProjectResp Project = 1;   
+}
+
+message CreateProjectResultProjectResp {
+    optional int64 Id = 1;
+    optional string CreateDate = 2;
+    optional string UpdateDate = 3;
+    optional string Status = 4;
+    optional string ProjectName = 5;
+    optional string Description = 6;
+}

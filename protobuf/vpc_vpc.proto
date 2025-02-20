@@ -1,0 +1,82 @@
+syntax = "proto3";
+package vpc_vpc;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service VpcVpc {
+    // DescribeVpcs
+    rpc DescribeVpcs(DescribeVpcsReq) returns (DescribeVpcsResp) {
+        option (api.http) = {
+            get: "/api/vpc_vpc/describe_vpcs"
+            description: "DescribeVpcs"
+        };
+    }
+}
+
+message DescribeVpcsReq {
+    repeated string VpcIds = 1;
+    optional string VpcName = 2;
+    optional string ProjectName = 3;
+    optional bool IsDefault = 4;
+    optional int64 VpcOwnerId = 5;
+    optional int64 PageNumber = 6;
+    optional int64 PageSize = 7;
+    optional string NextToken = 8;
+    optional int64 MaxResults = 9;
+    repeated DescribeVpcsTagFilterReq TagFilters = 10;
+}
+
+message DescribeVpcsTagFilterReq {
+    optional string key = 1;
+    repeated string Values = 2;
+}
+
+message DescribeVpcsResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeVpcsResultResp Result = 2;
+}
+
+message DescribeVpcsResultResp {
+    string RequestId = 1;
+    int64 TotalCount = 2;
+    int64 PageNumber = 3;
+    int64 PageSize = 4;
+    optional string NextToken = 5;
+    repeated DescribeVpcsResultVpcResp Vpcs = 6;
+}
+
+message DescribeVpcsResultVpcResp {
+    string AccountId = 1;
+    string VpcId = 2;
+    string VpcName = 3;
+    string Description = 4;
+    string CidrBlock = 5;
+    string Ipv6CidrBlock = 6;
+    string NetworkAclNum = 7;
+    bool IsDefault = 8;
+    string Status = 9;
+    string ProjectName = 10;
+    string CreationTime = 11;
+    string UpdateTime = 12;
+    repeated string SecondaryCidrBlocks = 13;
+    repeated string UserCidrBlocks = 14;
+    repeated string SubnetIds = 15;
+    repeated string RouteTableIds = 16;
+    repeated string SecurityGroupIds = 17;
+    repeated string NatGatewayIds = 18;
+    repeated string DnsServers = 19;
+    repeated DescribeVpcsResultVpcAssociateCenResp AssociateCens = 20;
+    repeated DescribeVpcsResultVpcTagResp Tags = 21;
+}
+
+message DescribeVpcsResultVpcAssociateCenResp {
+    optional string CenId = 1;
+    optional string CenOwnerId = 2;
+    optional string CenStatus = 3;
+}
+
+message DescribeVpcsResultVpcTagResp {
+    optional string Key = 1;
+    optional string Value = 2;
+}

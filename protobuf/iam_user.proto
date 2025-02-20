@@ -1,0 +1,347 @@
+syntax = "proto3";
+package iam_user;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service IamUser {
+    // get_user
+    rpc GetUser(GetUserReq) returns (GetUserResp) {
+        option (api.http) = {
+            get: "/api/iam_user/get_user"
+            description: "get user",
+        };
+    }
+
+    // create_user
+    rpc CreateUser(CreateUserReq) returns (CreateUserResp) {
+        option (api.http) = {
+            post: "/api/iam_user/create_user"
+            body: "*"
+            description: "create user"
+        };
+    }
+
+    // update user
+    rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp) {
+        option (api.http) = {
+            post: "/api/iam_user/update_user"
+            body: "*"
+            description: "update user"
+        };
+    }
+
+    // delete user
+    rpc DeleteUser(DeleteUserReq) returns (DeleteUserResp) {
+        option (api.http) = {
+            post: "/api/iam_user/delete_user"
+            body: "*"
+            description: "DeleteUser"
+        };
+    }
+
+    // CreateLoginProfile
+    rpc CreateLoginProfile(CreateLoginProfileReq) returns (CreateLoginProfileResp) {
+        option (api.http) = {
+            post: "/api/iam_user/create_login_profile"
+            body: "*"
+            description: "CreateLoginProfile"
+        };
+    }
+
+    // GetLoginProfile
+    rpc GetLoginProfile(GetLoginProfileReq) returns (GetLoginProfileResp) {
+        option (api.http) = {
+            get: "/api/iam_user/get_login_profile"
+            description: "GetLoginProfile"
+        };
+    }
+
+    // UpdateLoginProfile
+    rpc UpdateLoginProfile(UpdateLoginProfileReq) returns (UpdateLoginProfileResp) {
+        option (api.http) = {
+            post: "/api/iam_user/update_login_profile"
+            body: "*"
+            description: "UpdateLoginProfile"
+        };
+    }
+
+    // DeleteLoginProfile
+    rpc DeleteLoginProfile(DeleteLoginProfileReq) returns (DeleteLoginProfileResp) {
+        option (api.http) = {
+            post: "/api/iam_user/delete_login_profile"
+            body: "*"
+            description: "DeleteLoginProfile"
+        };
+    }
+
+    // SetSecurityConfig
+    rpc SetSecurityConfig(SetSecurityConfigReq) returns (SetSecurityConfigResp) {
+        option (api.http) = {
+            post: "/api/iam_user/set_security_config"
+            body: "*"
+            description: "SetSecurityConfig"
+        };
+    }
+
+    // GetSecurityConfig
+    rpc GetSecurityConfig(GetSecurityConfigReq) returns (GetSecurityConfigResp) {
+        option (api.http) = {
+            get: "/api/iam_User/get_security_config"
+            description: "GetSecurityConfig"
+        };
+    }
+}
+
+message DeleteUserReq {
+    optional string UserName = 1;
+}
+
+message DeleteUserResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+
+message GetSecurityConfigReq {
+    optional string UserName = 1;
+}
+
+message GetSecurityConfigResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+
+message GetSecurityConfigResultResp {
+    optional string SafeAuthType = 1;
+    optional int64 SafeAuthExemptDuration = 2;
+    optional int64 UserID = 3;
+}
+
+message SetSecurityConfigReq {
+    optional string UserName = 1;
+    optional string SafeAuthType = 2;
+    optional string SafeAuthExemptDuration = 3;
+}
+
+message SetSecurityConfigResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+
+message DeleteLoginProfileReq {
+    optional string UserName = 1;
+}
+
+message DeleteLoginProfileResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+
+message UpdateLoginProfileReq {
+    optional string UserName = 1;
+    optional string Password = 2;
+    optional bool LoginAllowed = 3;
+    optional bool PasswordResetRequired = 4;
+    optional bool SafeAuthFlag = 5;
+    optional string SafeAuthType = 6;
+    optional int64 SafeAuthExemptRequired = 7;
+    optional int64 SafeAuthExemptUnit = 8;
+    optional int64 SafeAuthExemptDuration = 9;
+}
+
+message UpdateLoginProfileResp {
+    ResponseMetadata ResponseMetadata = 1;
+    UpdateLoginProfileResultResp Result = 2;
+}
+
+message UpdateLoginProfileResultResp {
+    UpdateLoginProfilResultLoginProfileResp LoginProfile = 1;
+}
+
+message UpdateLoginProfilResultLoginProfileResp {
+    optional int64 UserId = 1;
+    optional string UserName = 2;
+    optional bool LoginAllowed = 3;
+    optional bool PasswordResetRequired = 4;
+    optional int64 PasswordExpireAt = 5;
+    optional int64 LastResetPasswordTime = 6;
+    optional string LastLoginDate = 7;
+    optional string LastLoginIp = 8;
+    optional bool LoginLocked = 9;
+    optional bool SafeAuthFlag = 10;
+    optional string SafeAuthType = 11;
+    optional int64 SafeAuthExemptRequired = 12;
+    optional int64 SafeAuthExemptUnit = 13;
+    optional int64 SafeAuthExemptDuration = 14;
+    optional string CreateDate = 15;
+    optional string UpdateDate = 16;
+}
+
+message GetLoginProfileReq {
+    optional string UserName = 1;
+}
+
+message GetLoginProfileResp {
+    ResponseMetadata ResponseMetadata = 1;
+    GetLoginProfileResultResp Result = 2;
+}
+
+message GetLoginProfileResultResp {
+    GetLoginProfileResultLoginProfileResp LoginProfile = 1;
+}
+
+message GetLoginProfileResultLoginProfileResp {
+    optional int64 UserId = 1;
+    optional string UserName = 2;
+    optional bool LoginAllowed = 3;
+    optional bool PasswordResetRequired = 4;
+    optional int64 PasswordExpireAt = 5;
+    optional int64 LastResetPasswordTime = 6;
+    optional string LastLoginDate = 7;
+    optional string LastLoginIp = 8;
+    optional bool LoginLocked = 9;
+    optional bool SafeAuthFlag = 10;
+    optional string SafeAuthType = 11;
+    optional int64 SafeAuthExemptRequired = 12;
+    optional int64 SafeAuthExemptUnit = 13;
+    optional int64 SafeAuthExemptDuration = 14;
+    optional string CreateDate = 15;
+    optional string UpdateDate = 16;
+}
+
+message CreateLoginProfileReq {
+    optional string UserName = 1;
+    optional bool LoginAllowed = 2;
+    optional bool PasswordResetRequired = 3;
+    optional string Password = 4;
+    optional bool SafeAuthFlag = 5;
+    optional string SafeAuthType = 6;
+    optional int64 SafeAuthExemptDuration = 7;
+    optional int64 SafeAuthExemptRequired = 8;
+    optional int64 SafeAuthExemptUnit = 9;
+}
+
+message CreateLoginProfileResp {
+    ResponseMetadata ResponseMetadata = 1;
+    CreateLoginProfileResultResp Result = 2;
+}
+
+message CreateLoginProfileResultResp {
+    CreateLoginProfileResultLoginProfileResp LoginProfile = 1;
+}
+
+message CreateLoginProfileResultLoginProfileResp {
+    optional int64 UserId = 1;
+    optional string UserName = 2;
+    optional bool LoginAllowed = 3;
+    optional bool PasswordResetRequired = 4;
+    optional int64 PasswordExpireAt = 5;
+    optional int64 LastResetPasswordTime = 6;
+    optional string LastLoginDate = 7;
+    optional string LastLoginIp = 8;
+    optional bool LoginLocked = 9;
+    optional bool SafeAuthFlag = 10;
+    optional string SafeAuthType = 11;
+    optional int64 SafeAuthExemptRequired = 12;
+    optional int64 SafeAuthExemptUnit = 13;
+    optional int64 SafeAuthExemptDuration = 14;
+    optional string CreateDate = 15;
+    optional string UpdateDate = 16;
+}
+
+message UpdateUserReq {
+    optional string UserName = 1;
+    optional string NewUserName = 2;
+    optional string NewDisplayName = 3;
+    optional string NewDescription = 4;
+    optional string NewMobilePhone = 5;
+    optional string NewEmail = 6;
+}
+
+message UpdateUserResp {
+    ResponseMetadata ResponseMetadata = 1;
+    GetUserResultResp Result = 2;
+}
+
+message UpdateUserResultResp {
+    UpdateUserResultUserResp User = 1;
+}
+
+message UpdateUserResultUserResp {
+    optional string CreateDate = 1;
+    optional string UpdateDate = 2;
+    optional string Status = 3;
+    optional int64 AccountId = 4;
+    optional string UserName = 5;
+    optional string Description = 6;
+    optional string DisplayName = 7;
+    optional string Email = 8;
+    optional bool EmailIsVerify = 9;
+    optional string MobilePhone = 10;
+    optional bool MobilePhoneIsVerify = 11;
+    optional string Trn = 12;
+}
+
+message CreateUserReq {
+    optional string UserName = 1;
+    optional string DisplayName = 2;
+    optional string Description = 3;
+    optional string Email = 4;
+    optional string MobilePhone = 5;
+    repeated CreateUserTagReq Tags = 6;
+}
+
+message CreateUserTagReq {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message GetUserReq {
+    optional string UserName = 1;
+    optional string AccessKeyID = 2;
+    optional string ID = 3;
+}
+
+message CreateUserResp {
+    ResponseMetadata ResponseMetadata = 1;
+    CreateUserResultResp Result = 2;
+}
+
+message CreateUserResultResp {
+    CreateUserResultUserResp User = 1;
+}
+
+message CreateUserResultUserResp {
+    optional string CreateDate = 1;
+    optional string UpdateDate = 2;
+    optional string Status = 3;
+    optional int64 AccountId = 4;
+    optional string UserName = 5;
+    optional string Description = 6;
+    optional string DisplayName = 7;
+    optional string Email = 8;
+    optional bool EmailIsVerify = 9;
+    optional string MobilePhone = 10;
+    optional bool MobilePhoneIsVerify = 11;
+    optional string Trn = 12;
+}
+
+message GetUserResp {
+    ResponseMetadata ResponseMetadata = 1;
+    GetUserResultResp Result = 2;
+}
+
+message GetUserResultResp {
+    GetUserResultUserResp User = 1;
+}
+
+message GetUserResultUserResp {
+    optional string CreateDate = 1;
+    optional string UpdateDate = 2;
+    optional string Status = 3;
+    optional int64 AccountId = 4;
+    optional string UserName = 5;
+    optional string Description = 6;
+    optional string DisplayName = 7;
+    optional string Email = 8;
+    optional bool EmailIsVerify = 9;
+    optional string MobilePhone = 10;
+    optional bool MobilePhoneIsVerify = 11;
+    optional string Trn = 12;
+}

@@ -1,0 +1,70 @@
+syntax = "proto3";
+package rds_endpoint;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service RdsEndpoint {
+    // CreateDBEndpoint
+    rpc CreateDBEndpoint(CreateDBEndpointReq) returns (CreateDBEndpointResp) {
+        option (api.http) = {
+            post: "/api/rds_endpoit/create_db_endpoint"
+            body: "*"
+            description: "CreateDBEndpoint"
+        };
+    }
+
+    // ModifyDBEndpoint
+    rpc ModifyDBEndpoint(ModifyDBEndpointReq) returns (ModifyDBEndpointResp) {
+        option (api.http) = {
+            post: "/api/rds_endpoint/modify_db_endpoint"
+            body: "*"
+            description: "ModifyDBEndpoint"
+        };
+    }
+}
+
+message ModifyDBEndpointReq {
+    optional string InstanceId = 1;
+    optional string EndpointId = 2;
+    optional string ReadWriteMode = 3;
+    optional string EndpointName = 4;
+    optional string Description = 5;
+    optional string Nodes = 6;
+    optional bool AutoAddNewNodes = 7;
+    optional bool ReadWriteSpliting = 8;
+    optional int64 ReadOnlyNodeMaxDelayTime = 9;
+    optional string ReadOnlyNodeDistributionType = 10;
+    optional bool IdleConnectionReclaim = 11;
+    repeated ModifyDBEndpointReadOnlyNodeWeightReq ReadOnlyNodeWeight = 12;
+}
+
+message ModifyDBEndpointReadOnlyNodeWeightReq {
+    string NodeId = 1;
+    string NodeType = 2;
+    int64 Weight = 3;
+}
+
+message ModifyDBEndpointResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+
+message CreateDBEndpointReq {
+    optional string InstanceId = 1;
+    optional string EndpointType = 2;
+    optional string ReadWriteMode = 3;
+    optional string EndpointName = 4;
+    optional string Description = 5;
+    optional string Nodes = 6;
+    optional bool AutoAddNewNodes = 7;
+}
+
+message CreateDBEndpointResp {
+    ResponseMetadata ResponseMetadata = 1;
+    CreateDBEndpointResultResp Result = 2;
+}
+
+message CreateDBEndpointResultResp {
+    optional string InstanceId = 1;
+    optional string EndpointId = 2;
+}

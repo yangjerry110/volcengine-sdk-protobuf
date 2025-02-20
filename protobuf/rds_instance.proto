@@ -1,0 +1,371 @@
+syntax = "proto3";
+package rds_instance;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+
+service RdsInstance {
+    // DescribeDBInstances
+    rpc DescribeDBInstances(DescribeDBInstancesReq) returns (DescribeDBInstancesResp) {
+        option (api.http) = {
+            get: "/api/rds_instance/describe_db_instances"
+            description: "DescribeDBInstances"
+        };
+    }
+
+    // CreateDBInstance
+    rpc CreateDBInstance(CreateDBInstanceReq) returns (CreateDBInstanceResp) {
+        option (api.http) = {
+            post: "/api/rds_instance/create_db_instance"
+            body: "*"
+            description: "CreateDBInstance"
+        };
+    }
+
+    // ModifyDBInstanceSpec
+    rpc ModifyDBInstanceSpec(ModifyDBInstanceSpecReq) returns (ModifyDBInstanceSpecResp) {
+        option (api.http) = {
+            post: "/api/rds_instance/modify_db_instance_spec"
+            body: "*"
+            description: "ModifyDBInstanceSpec"
+        };
+    }
+
+    // DescribeDBInstanceDetail
+    rpc DescribeDBInstanceDetail(DescribeDBInstanceDetailReq) returns (DescribeDBInstanceDetailResp) {
+        option (api.http) = {
+            get: "/api/rds_instance/describe_db_instance_detail"
+            description: "DescribeDBInstanceDetail"
+        };
+    }
+}
+
+message DescribeDBInstancesReq {
+    optional string ProjectName = 1;
+    optional string InstanceId = 2;
+    optional string InstanceName = 3;
+    optional string InstanceStatus = 4;
+    optional string DBEngineVersion = 5;
+    optional string CreateTimeStart = 6;
+    optional string CreateTimeEnd = 7;
+    optional string ZoneId = 8;
+    optional string ChargeType = 9;
+    optional string InstanceType = 10;
+    optional int64 PageNumber = 11;
+    optional string NodeSpec = 12;
+    optional int64 PageSize = 13;
+    repeated DescribeDBInstancesTagFilterReq TagFilters = 14;
+}
+
+message DescribeDBInstancesTagFilterReq {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message DescribeDBInstancesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeDBInstancesResultResp Result = 2;
+}
+
+message DescribeDBInstancesResultResp {
+    optional int64 Total = 1;
+    repeated DescribeDBInstancesResultInstanceResp Instances = 2;
+}
+
+message DescribeDBInstancesResultInstanceResp {
+    optional string AllowListVersion = 1;
+    optional string CreateTime = 2;
+    optional string DBEngineVersion = 3;
+    optional string InstanceId = 4;
+    optional string InstanceName = 5;
+    optional string InstanceStatus = 6;
+    optional string InstanceType = 7;
+    optional string LowerCaseTableNames = 8;
+    optional float NodeCPUUsedPercentage = 9;
+    optional float NodeMemoryUsedPercentage = 10;
+    optional int64 NodeNumber = 11;
+    optional float NodeSpaceUsedPercentage = 12;
+    optional string NodeSpec = 13;
+    optional string ProjectName = 14;
+    optional string RegionId = 15;
+    optional int64 StorageSpace = 16;
+    optional string StorageType = 17;
+    optional string SubnetId = 18;
+    optional string TimeZone = 19;
+    optional string VpcId = 20;
+    optional string ZoneId = 21;
+    DescribeDBInstancesResultInstanceChargeDetailResp ChargeDetail = 22;
+    DescribeDBInstancesResultInstanceMaintenanceWindowResp MaintenanceWindow = 23;
+    repeated string ZoneIds = 24;
+    repeated DescribeDBInstancesResultInstanceAddressResp AddressObject = 25;
+    repeated DescribeDBInstancesResultInstanceTagResp Tags = 26;
+}
+
+message DescribeDBInstancesResultInstanceTagResp {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message DescribeDBInstancesResultInstanceMaintenanceWindowResp {
+    optional string MaintenanceTime = 1;
+    optional string DayKind = 2;
+    repeated string DayOfWeek = 3;
+}
+
+message DescribeDBInstancesResultInstanceChargeDetailResp {
+    optional string ChargeType = 1;
+    optional bool AutoRenew = 2;
+    optional string PeriodUnit = 3;
+    optional int64 Period = 4;
+    optional string ChargeStatus = 5;
+    optional string ChargeStartTime = 6;
+    optional string ChargeEndTime = 7;
+    optional string OverdueTime = 8;
+    optional string OverdueReclaimTime = 9;
+    optional string TempModifyStartTime = 10;
+    optional string TempModifyEndTime = 11;
+}
+
+message DescribeDBInstancesResultInstanceAddressResp {
+    optional bool DNSVisibility = 1;
+    optional string Domain = 2;
+    optional string EipId = 3;
+    optional string IPAddress = 4;
+    optional string InternetProtocol = 5;
+    optional string NetworkType = 6;
+    optional string Port = 7;
+    optional string SubnetId = 8;
+}
+
+message ModifyDBInstanceSpecReq {
+    optional string InstanceId = 1;
+    optional string ModifyType = 2;
+    optional string StorageType = 3;
+    optional int64 StorageSpace = 4;
+    optional string SwitchType = 5;
+    repeated ModifyDBInstanceSpecNodeInfoReq NodeInfo = 6;
+}
+
+message ModifyDBInstanceSpecNodeInfoReq {
+    optional string NodeId = 1;
+    optional string ZoneId = 2;
+    optional string NodeType = 3;
+    optional string NodeSpec = 4;
+    optional string NodeOperateType = 5;
+}
+
+message ModifyDBInstanceSpecResp {
+    ResponseMetadata ResponseMetadata = 1;
+    ModifyDBInstanceSpecResultResp Result = 2;
+}
+
+message ModifyDBInstanceSpecResultResp {
+    optional string InstanceId = 1;
+    optional string OrderId = 2;
+}
+
+message DescribeDBInstanceDetailReq {
+    optional string InstanceId = 1;
+}
+
+message DescribeDBInstanceDetailResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeDBInstanceDetailResultResp Result = 2;
+}
+
+message DescribeDBInstanceDetailResultResp {
+    DescribeDBInstanceDetailResultBasicInfoResp BasicInfo = 1;
+    DescribeDBInstanceDetailResultChargeDetailResp ChargeDetail = 2;
+    repeated DescribeDBInstanceDetailResultEndpointResp Endpoints = 3;
+    repeated DescribeDBInstanceDetailResultNodeResp NodeDetailInfo = 4;
+    DescribeDBInstanceDetailResultProxyDetailResp ProxyDetail = 5;
+}
+
+message DescribeDBInstanceDetailResultProxyDetailResp {
+    optional bool Charged = 1;
+    optional string DBProxyStatus = 2;
+    DescribeDBInstanceDetailResultProxyDetailProxyResourceInfoResp ProxyResourceInfo = 3;
+}
+
+message DescribeDBInstanceDetailResultProxyDetailProxyResourceInfoResp {
+    optional int64 CurrentProxyCpuNum = 1;
+    optional int64 MaxProxyCpuNum = 2;
+    optional int64 MinProxyCpuNum = 3;
+}
+
+message DescribeDBInstanceDetailResultNodeResp {
+    optional string InstanceId = 1;
+    optional string NodeId = 2;
+    optional string RegionId = 3;
+    optional string ZoneId = 4;
+    optional string NodeType = 5;
+    optional string NodeStatus = 6;
+    optional string NodeSpec = 7;
+    optional int64 VCPU = 8;
+    optional int64 Memory = 9;
+    optional string CreateTime = 10;
+    optional string UpdateTime = 11;
+}
+
+message DescribeDBInstanceDetailResultChargeDetailResp {
+    optional string ChargeType = 1;
+    optional bool AutoRenew = 2;
+    optional string PeriodUnit = 3;
+    optional int64 Period = 4;
+    optional string ChargeStatus = 5;
+    optional string ChargeStartTime = 6;
+    optional string ChargeEndTime = 7;
+    optional string OverdueTime = 8;
+    optional string OverdueReclaimTime = 9;
+    optional string TempModifyStartTime = 10;
+    optional string TempModifyEndTime = 11;
+}
+
+message DescribeDBInstanceDetailResultBasicInfoResp {
+    optional string InstanceId = 1;
+    optional string InstanceName = 2;
+    optional string InstanceStatus = 3;
+    optional string RegionId = 4;
+    optional string ZoneId = 5;
+    optional string DBEngine = 6;
+    optional string DBEngineVersion = 7;
+    optional string InstanceType = 8;
+    optional int64 VCPU = 9;
+    optional int64 Memory = 10;
+    optional string NodeSpec = 11;
+    optional string NodeNumber = 12;
+    optional string CreateTime = 13;
+    optional string UpdateTime = 14;
+    optional string StorageType = 15;
+    optional int64 StorageSpace = 16;
+    optional float StorageUse = 17;
+    optional float BackupUse = 18;
+    optional string VpcId = 19;
+    optional string SubnetId = 20;
+    optional string TimeZone = 21;
+    optional string LowerCaseTableNames = 22;
+    optional string DataSyncMode = 23;
+    optional string ProjectName = 24;
+    optional string AllowListVersion = 25;
+    repeated DescribeDBInstanceDetailResultBasicInfoTagResp Tags = 26;
+}
+
+message DescribeDBInstanceDetailResultEndpointResp {
+    optional string EndpointId = 1;
+    optional string EndpointName = 2;
+    optional string EndpointType = 3;
+    optional string ReadWriteMode = 4;
+    optional string Description = 5;
+    optional string AutoAddNewNodes = 6;
+    optional string EnableReadWriteSplitting = 7;
+    optional string EnableReadOnly = 8;
+    repeated DescribeDBInstanceDetailResultEndpointAddressesResp Addresses = 9;
+    repeated DescribeDBInstanceDetailResultEndpointAddressesResp Address = 10;
+    repeated DescribeDBInstanceDetailResultEndpointReadOnlyNodeWeightResp ReadOnlyNodeWeight = 11;
+}
+
+message DescribeDBInstanceDetailResultEndpointReadOnlyNodeWeightResp {
+    optional string NodeId = 1;
+    optional string NodeType = 2;
+    optional int64 Weight = 3;
+}
+
+message DescribeDBInstanceDetailResultEndpointAddressResp {
+    optional bool DNSVisibility = 1;
+    optional string Domain = 2;
+    optional string EipId = 3;
+    optional string IPAddress = 4;
+    optional string InternetProtocol = 5;
+    optional string NetworkType = 6;
+    optional string Port = 7;
+    optional string SubnetId = 8;
+}
+
+message DescribeDBInstanceDetailResultEndpointAddressesResp {
+    optional bool DNSVisibility = 1;
+    optional string Domain = 2;
+    optional string EipId = 3;
+    optional string IPAddress = 4;
+    optional string InternetProtocol = 5;
+    optional string NetworkType = 6;
+    optional string Port = 7;
+    optional string SubnetId = 8;
+}
+
+message DescribeDBInstanceDetailResultBasicInfoTagResp {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message CreateDBInstanceReq {
+    optional string DBEngineVersion = 1;
+    optional string StorageType = 2;
+    optional int64 StorageSpace = 3;
+    optional string InstanceType = 4;
+    optional string VpcId = 5;
+    optional string SubnetId = 6;
+    optional string InstanceName = 7;
+    optional string SuperAccountName = 8;
+    optional string SuperAccountPassword = 9;
+    optional string LowerCaseTableNames = 10;
+    optional string DBTimeZone = 11;
+    optional string DBParamGroupId = 12;
+    optional string ProjectName = 13;
+    optional int64 Port = 14;
+    CreateDBInstanceChargeInfoReq ChargeInfo = 15;
+    CreateDBInstanceMaintenanceWindowObjectReq MaintenanceWindow = 16;
+    repeated string AllowListIds = 17;
+    repeated CreateDBInstanceNodeInfoReq NodeInfo = 18;
+    repeated CreateDBInstanceTagReq InstanceTags = 19;
+}
+
+message CreateDBInstanceMaintenanceWindowObjectReq {
+    optional string MaintenanceTime = 1;
+    optional string DayKind = 2;
+    repeated string DayOfWeek = 3;
+}
+
+message CreateDBInstanceTagReq {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message CreateDBInstanceChargeInfoReq {
+    optional string ChargeType = 1;
+    optional bool AutoRenew = 2;
+    optional string PeriodUnit = 3;
+    optional int64 Period = 4;
+    optional int64 Number = 5;
+}
+
+message CreateDBInstanceNodeInfoReq {
+    optional string NodeId = 1;
+    optional string ZoneId = 2;
+    optional string NodeType = 3;
+    optional string NodeSpec = 4;
+    optional string NodeOperateType = 5;
+}
+
+message CreateDBInstanceResp {
+    ResponseMetadata ResponseMetadata = 1;
+    CreateDBInstanceResultResp Result = 2;
+}
+
+message CreateDBInstanceResultResp {
+    optional string InstanceId = 1;
+    optional string OrderId = 2;
+}
+
+message ResponseMetadata {
+	string RequestId = 1;
+	string Action = 2;
+	string Version = 3;
+	string Service = 4;
+	string Region = 5;
+	ResponseMetadataErr Error = 6;
+}
+
+message ResponseMetadataErr {
+	optional int64 CodeN = 1;
+	string Code = 2;
+	string Message = 3;
+}

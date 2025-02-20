@@ -1,0 +1,17 @@
+syntax = "proto3";
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+
+message ResponseMetadata {
+	string RequestId = 1;
+	string Action = 2;
+	string Version = 3;
+	string Service = 4;
+	string Region = 5;
+	ResponseMetadataErr Error = 6;
+}
+
+message ResponseMetadataErr {
+	optional int64 CodeN = 1;
+	string Code = 2;
+	string Message = 3;
+}

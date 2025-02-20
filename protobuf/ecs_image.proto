@@ -1,0 +1,99 @@
+syntax = "proto3";
+package ecs_image;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service EcsImage {
+    // DescribeImages
+    rpc DescribeImages(DescribeImagesReq) returns (DescribeImagesResp) {
+        option (api.http) = {
+            get: "/api/ecs_image/describe_images"
+            description: "DescribeImages"
+        };
+    }
+}
+
+message DescribeImagesReq {
+    repeated string ImageIds = 1;
+    optional string ImageName = 2;
+    optional string InstanceTypeId = 3;
+    optional bool IsLTS = 4;
+    optional bool IsSupportCloudInit = 5;
+    optional int64 MaxResults = 6;
+    optional string NextToken = 7;
+    optional string OsType = 8;
+    optional string Platform = 9;
+    optional string ProjectName = 10;
+    repeated string Status = 11;
+    repeated DescribeImagesTagFilterReq TagFilter = 12;
+    optional string Visibility = 13;
+}
+
+message DescribeImagesTagFilterReq {
+    string key = 1;
+    repeated string values = 2;
+}
+
+message DescribeImagesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeImagesResultResp Result = 2;
+}
+
+message DescribeImagesResultResp {
+    repeated DescribeImagesResultImageResp Images = 1;
+    optional string NextToken = 24;
+}
+
+message DescribeImagesResultImageResp {
+    optional string Architecture = 1;
+    optional string BootMode = 2;
+    optional string CreatedAt = 3;
+    optional string Description = 4;
+    optional string ImageId = 5;
+    optional string ImageName = 6;
+    optional string ImageOwnerId = 7;
+    optional bool IsInstallRunCommandAgent = 8;
+    optional bool IsLTS = 9;
+    optional bool IsSupportCloudInit = 10;
+    optional string Kernel = 11;
+    optional string LicenseType = 12;
+    optional string OsName = 13;
+    optional string OsType = 14;
+    optional string Platform = 15;
+    optional string PlatformVersion = 16;
+    optional string ProjectName = 17;
+    optional string ShareStatus = 18;
+    optional int64 Size = 19;
+    optional string Status = 20;
+    optional string UpdatedAt = 21;
+    optional int64 VirtualSize = 22;
+    optional string Visibility = 23;
+    DescribeImagesResultImageDetectionResultsResp DetectionResults = 25;
+    repeated DescribeImagesResultImageItemResp Items = 26;
+    repeated DescribeImagesResultImageSnapshotsResp Snapshots = 27;
+    repeated DescribeImagesResultImageTagResp Tags = 28;
+}
+
+message DescribeImagesResultImageTagResp {
+    string key = 1;
+    string value = 2;
+}
+
+message DescribeImagesResultImageSnapshotsResp {
+    int64 Size = 1;
+    string SnapshotId = 2;
+    string VolumeKind = 3;
+}
+
+message DescribeImagesResultImageItemResp {
+    string Name = 1;
+    string Result = 2;
+    string RiskCode = 3;
+    string RiskLevel = 4;
+}
+
+message DescribeImagesResultImageDetectionResultsResp {
+    string DetectionStatus = 1;
+}
+

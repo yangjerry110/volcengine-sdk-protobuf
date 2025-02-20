@@ -1,0 +1,32 @@
+syntax = "proto3";
+package redis_allow;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service RedisAllow {
+    // ModifyAllowList
+    rpc RedisModifyAllowList(RedisModifyAllowListReq) returns (RedisModifyAllowListResp) {
+        option (api.http) = {
+            post: "/api/redis_allow/modify_allow_list"
+            body: "*"
+            description: "ModifyAllowList"
+        };
+    }
+}
+
+message RedisModifyAllowListReq {
+    string AllowListId = 1;
+    string AllowListName = 2;
+    string ModifyMode = 3;
+    string AllowListDesc = 4;
+    string AllowList = 5;
+    int64 ApplyInstanceNum = 6;
+    string AllowListCategory = 7;
+    string ClientToken = 8;
+}
+
+message RedisModifyAllowListResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+

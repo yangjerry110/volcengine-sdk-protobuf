@@ -1,0 +1,76 @@
+syntax = "proto3";
+package rds_account;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service RdsAccount {
+    // CreateDBAccount
+    rpc CreateDBAccount(CreateDBAccountReq) returns (CreateDBAccountResp) {
+        option (api.http) = {
+            post: "/api/rds_account/create_db_account"
+            body: "*"
+            description: "CreateDBAccount"
+        };
+    }
+
+    // DescribeDBAccounts
+    rpc DescribeDBAccounts(DescribeDBAccountsReq) returns (DescribeDBAccountsResp) {
+        option (api.http) = {
+            get: "/api/rds_account/describe_db_accounts"
+            description: "DescribeDBAccounts"
+        };
+    }
+}
+
+message DescribeDBAccountsReq {
+    optional string InstanceId = 1;
+    optional string AccountName = 2;
+    optional int64 PageNumber = 3;
+    optional int64 PageSize = 4;
+}
+
+message DescribeDBAccountsResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeDBAccountsResultResp Result = 2;
+}
+
+message DescribeDBAccountsResultResp {
+    optional int64 Total = 1;
+    repeated DescribeDBAccountsResultAccountResp Accounts = 2;
+}
+
+message DescribeDBAccountsResultAccountResp {
+    optional string AccountName = 1;
+    optional string Host = 2;
+    optional string AccountDesc = 3;
+    optional string AccountType = 4;
+    optional string AccountStatus = 5;
+    repeated DescribeDBAccountsResultAccountPrivilegeResp AccountPrivileges = 6;
+}
+
+message DescribeDBAccountsResultAccountPrivilegeResp {
+    optional string DBName = 1;
+    optional string AccountPrivilege = 2;
+    optional string AccountPrivilegeDetail = 3;
+}
+
+message CreateDBAccountReq {
+    optional string InstanceId = 1;
+    optional string AccountName = 2;
+    optional string AccountDesc = 3;
+    optional string Host = 4;
+    optional string AccountPassword = 5;
+    optional string AccountType = 6;
+    repeated CreateDBAccountPrivilegesReq AccountPrivileges = 7;
+}
+
+message CreateDBAccountPrivilegesReq {
+    optional string DBName = 1;
+    optional string AccountPrivilege = 2;
+    optional string AccountPrivilegeDetail = 3;
+}
+
+message CreateDBAccountResp {
+    ResponseMetadata ResponseMetadata = 1;
+}

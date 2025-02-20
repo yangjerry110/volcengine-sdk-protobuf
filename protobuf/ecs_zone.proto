@@ -1,0 +1,61 @@
+syntax = "proto3";
+package ecs_zone;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service EcsZone {
+    // DescribeRegions
+    rpc DescribeRegions(DescribeRegionsReq) returns (DescribeRegionsResp) {
+        option (api.http) = {
+            get: "/api/ecs_zone/describe_regions"
+            description: "DescribeRegions"
+        };
+    }
+
+    // DescribeZones
+    rpc DescribeZones(DescribeZonesReq) returns (DescribeZonesResp) {
+        option (api.http) = {
+            get: "/api/ecs_zone/describe_zones"
+            description: "DescribeZones"
+        };
+    }
+}
+
+message DescribeZonesReq {
+    repeated string ZoneIds = 1;
+}
+
+message DescribeZonesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeZonesResultResp Result = 2;
+}
+
+message DescribeZonesResultResp {
+    repeated DescribeZonesResultZoneResp Zones = 1;
+}
+
+message DescribeZonesResultZoneResp {
+    string ZoneId = 1;
+}
+
+message DescribeRegionsReq {
+    int64 MaxResults = 1;
+    string NextToken = 2;
+    repeated string RegionIds = 3;
+}
+
+message DescribeRegionsResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeRegionsResultResp Result = 2;
+}
+
+message DescribeRegionsResultResp {
+    repeated DescribeRegionsResultRegionResp Regions = 1;
+    string NextToken = 2;
+}
+
+message DescribeRegionsResultRegionResp {
+    string RegionId = 1;
+}
+

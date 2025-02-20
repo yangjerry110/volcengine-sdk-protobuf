@@ -1,0 +1,250 @@
+syntax = "proto3";
+package iam_policy;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service IamPolicy {
+    // ListPolicies
+    rpc ListPolicies(ListPoliciesReq) returns (ListPoliciesResp) {
+        option (api.http) = {
+            get: "/api/iam_policy/list_policy"
+            description: "ListPolicies"
+        };
+    }
+
+    // CreatePolicy
+    rpc CreatePolicy(CreatePolicyReq) returns (CreatePolicyResp) {
+        option (api.http) = {
+            post: "/api/iam_policy/create_policy"
+            body: "*"
+            description: "Create Policy"
+        };
+    }
+
+    // GetPolicy
+    rpc GetPolicy(GetPolicyReq) returns (GetPolicyResp) {
+        option (api.http) = {
+            get: "/api/iam_policy/get_policy"
+            description: "GetPolicy"
+        };
+    }
+
+    // UpdatePolicy
+    rpc UpdatePolicy(UpdatePolicyReq) returns (UpdatePolicyResp) {
+        option (api.http) = {
+            post: "/api/iam_policy/update_policy"
+            body: "*"
+            description: "UpdatePolicy"
+        };
+    }
+
+    // AttachUserPolicy
+    rpc AttachUserPolicy(AttachUserPolicyReq) returns (AttachUserPolicyResp) {
+        option (api.http) = {
+            post: "/api/iam_policy/attach_user_policy"
+            body: "*"
+            description: "AttachUserPolicy"
+        };
+    }
+
+    // DetachUserPolicy
+    rpc DetachUserPolicy(DetachUserPolicyReq) returns (DetachUserPolicyResp) {
+        option (api.http) = {
+            post: "/api/iam_policy/detach_user_policy"
+            body: "*"
+            description: "DetachUserPolicy"
+        };
+    }
+
+    // ListAttachedUserPolicies
+    rpc ListAttachedUserPolicies(ListAttachedUserPoliciesReq) returns (ListAttachedUserPoliciesResp) {
+        option (api.http) = {
+            get: "/api/iam_policy/list_attached_user_policies"
+            description: "ListAttachedUserPolicies"
+        };
+    }
+
+    // DeletePolicy
+    rpc DeletePolicy(DeletePolicyReq) returns (DeletePolicyResp) {
+        option (api.http) = {
+            post: "/api/iam_policy/delete_policy"
+            body: "*"
+            description: "DeletePolicy"
+        };
+    }
+}
+
+message ListPoliciesReq {
+    string Scope = 1 [(api.in)="query"];
+    int64 WithServiceRolePolicy = 2 [(api.in)="query"];
+    int64 Limit = 3 [(api.in)="query"];
+    int64 Offset = 4 [(api.in)="query"];
+}
+
+message ListPoliciesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    ListPoliciesResultResp Result = 2;
+}
+
+message ListPoliciesResultResp {
+    int64 Limit = 1;
+    int64 Offset = 2;
+    int64 Total = 3;
+    repeated ListPoliciesResultPolicyResp PolicyMetadata = 4;
+}
+
+message ListPoliciesResultPolicyResp {
+    string PolicyName = 1;
+    string PolicyTrn = 2;
+    string PolicyType = 3;
+    string Description = 4;
+    string PolicyDocument = 5;
+    string Category = 6;
+    int64 AttachmentCount = 7;
+    int64 IsServiceRolePolicy = 8;
+    string CreateDate = 9;
+    string UpdateDate = 10;
+}
+
+message DeletePolicyReq {
+    string PolicyName = 1;
+}
+
+message DeletePolicyResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+
+message ListAttachedUserPoliciesReq {
+    string UserName = 1 [(api.in)="query"];
+}
+
+message ListAttachedUserPoliciesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    ListAttachedUserPoliciesResultResp Result = 2;
+}
+
+message ListAttachedUserPoliciesResultResp {
+    repeated ListAttachedUserPoliciesResultPolicyResp AttachedPolicyMetadata = 1;
+}
+
+message ListAttachedUserPoliciesResultPolicyResp {
+    string PolicyTrn = 1;
+    string PolicyName = 2;
+    string PolicyType = 3;
+    string AttachDate = 4;
+    string Description = 5;
+    repeated ListAttachedUserPoliciesResultPolicyScopeResp PolicyScope = 6;
+}
+
+message ListAttachedUserPoliciesResultPolicyScopeResp {
+    string PolicyScopeType = 1;
+    string ProjectName = 2;
+    string ProjectDisplayName = 3;
+    string AttachDate = 4;
+}
+
+message DetachUserPolicyReq {
+    string UserName = 1;
+    string PolicyName = 2;
+    string PolicyType = 3;
+}
+
+message DetachUserPolicyResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+
+message AttachUserPolicyReq {
+    string UserName = 1;
+    string PolicyName = 2;
+    string PolicyType = 3;
+}
+
+message AttachUserPolicyResp {
+    ResponseMetadata ResponseMetadata = 1;
+}
+
+message UpdatePolicyReq {
+    string NewDescription = 1;
+    string NewPolicyDocument = 2;
+    string NewPolicyName = 3;
+    string PolicyName = 4;
+}
+
+message UpdatePolicyResp {
+    ResponseMetadata ResponseMetadata = 1;
+    UpdatePolicyResultResp Result = 2;
+}
+
+message UpdatePolicyResultResp {
+    UpdatePolicyResultPolicyResp Policy = 1;
+}
+
+message UpdatePolicyResultPolicyResp {
+    optional string PolicyName = 1;
+    optional string PolicyTrn = 2;
+    optional string PolicyType = 3;
+    optional string Description = 4;
+    optional string PolicyDocument = 5;
+    optional string Category = 6;
+    optional int64 AttachmentCount = 7;
+    optional int64 IsServiceRolePolicy = 8;
+    optional string CreateDate = 9;
+    optional string UpdateDate = 10;
+}
+
+message GetPolicyReq {
+    string PolicyName = 1 [(api.in)="query"];
+    string PolicyType = 2 [(api.in)="query"];
+}
+
+message GetPolicyResp {
+    ResponseMetadata ResponseMetadata = 1;
+    GetPolicyResultResp Result = 2;
+}
+
+message GetPolicyResultResp {
+    GetPolicyResultPolicyResp Policy = 1;
+}
+
+message GetPolicyResultPolicyResp {
+    string PolicyName = 1;
+    string PolicyTrn = 2;
+    string PolicyType = 3;
+    string Description = 4;
+    string PolicyDocument = 5;
+    string Category = 6;
+    int64 AttachmentCount = 7;
+    int64 IsServiceRolePolicy = 8;
+    string CreateDate = 9;
+    string UpdateDate = 10;
+}
+
+message CreatePolicyReq {
+    string PolicyName = 1;
+    string PolicyDocument = 2;
+    string Description = 3;
+}
+
+message CreatePolicyResp {
+    ResponseMetadata ResponseMetadata = 1;
+    CreatePolicyResultResp Result = 2;
+}
+
+message CreatePolicyResultResp {
+    CreatePolicyResultPolicyResp Policy = 1;
+}
+
+message CreatePolicyResultPolicyResp {
+    optional string PolicyName = 1;
+    optional string PolicyTrn = 2;
+    optional string PolicyType = 3;
+    optional string Description = 4;
+    optional string PolicyDocument = 5;
+    optional string Category = 6;
+    optional int64 AttachmentCount = 7;
+    optional int64 IsServiceRolePolicy = 8;
+    optional string Site = 9;
+    optional string CreateDate = 10;
+    optional string UpdateDate = 11;
+}

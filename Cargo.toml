@@ -1,0 +1,20 @@
+[package]
+name = "volcengine-sdk-protobuf"
+version = "1.0.0"
+edition = "2021"
+description = "volcengine sdk protobuf"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/yangjerry110/volcengine-sdk-protobuf" # 添加仓库地址
+documentation = "https://docs.rs/volcengine-sdk-protobuf"  # docs.rs 会自动生成，可省略
+
+[dependencies]
+tonic = "0.9"
+prost = "0.11"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[build-dependencies]
+tonic-build = "0.9"
+prost = "0.11"  # 或者你实际使用的版本
+
+

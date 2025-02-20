@@ -1,0 +1,98 @@
+syntax = "proto3";
+package lb_instance;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service LbInstance {
+    // DescribeLoadBalancers
+    rpc DescribeLoadBalancers(DescribeLoadBalancersReq) returns (DescribeLoadBalancersResp) {
+        option (api.http) = {
+            get: "/api/lb_instance/describe_load_balancers"
+            description: "DescribeLoadBalancers"
+        };
+    }
+}
+
+message DescribeLoadBalancersReq {
+    string ExclusiveClusterId = 1;
+    string LoadBalancerName = 2;
+    string MasterZoneId = 3;
+    string AddressIpVersion = 4;
+    string Type = 5;
+    string VpcId = 6;
+    string EniAddress = 7;
+    string EipAddress = 8;
+    string Status = 9;
+    string ProjectName = 10;
+    int64 PageNumber = 11;
+    int64 PageSize = 12;
+    repeated string LoadBalancerIds = 13;
+    repeated DescribeLoadBalancersTagFilterReq TagFilters = 14;
+}
+
+message DescribeLoadBalancersTagFilterReq {
+    string Key = 1;
+    repeated string Values = 2;
+}
+
+message DescribeLoadBalancersResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeLoadBalancersResultResp Result = 2;
+}
+
+message DescribeLoadBalancersResultResp {
+    string RequestId = 1;
+    int64 TotalCount = 2;
+    int64 PageNumber = 3;
+    int64 PageSize = 4;
+    repeated DescribeLoadBalancersResultLoadBalancerResp LoadBalancers = 5;
+}
+
+message DescribeLoadBalancersResultLoadBalancerResp {
+    string ExclusiveClusterId = 1;
+    string AccountId = 2;
+    string LoadBalancerId = 3;
+    string LoadBalancerName = 4;
+    string Description = 5;
+    string Type = 6;
+    string AddressIpVersion = 7;
+    int64 LoadBalancerBillingType = 8;
+    string LoadBalancerSpec = 9;
+    string MasterZoneId = 10;
+    string SlaveZoneId = 11;
+    string VpcId = 12;
+    string SubnetId = 13;
+    string EniID = 14;
+    string EniAddress = 15;
+    int64 EniAddressNum = 16;
+    string EipID = 17;
+    string EipAddress = 18;
+    string EniIpv6Address = 19;
+    string Ipv6EipId = 20;
+    string ModificationProtectionStatus = 21;
+    string ModificationProtectionReason = 22;
+    bool ServiceManaged = 23;
+    string Status = 24;
+    string BusinessStatus = 25;
+    string LockReason = 26;
+    string ProjectName = 27;
+    string CreateTime = 28;
+    string UpdateTime = 29;
+    string OverdueTime = 30;
+    string DeletedTime = 31;
+    string ExpiredTime = 32;
+    repeated DescribeLoadBalancersResultLoadBalancerTagResp Tags = 33;
+    DescribeLoadBalancersResultLoadBalancerEniAddresseResp EniAddresses = 34;
+}
+
+message DescribeLoadBalancersResultLoadBalancerTagResp {
+    string Key = 1;
+    string Value = 2;
+}
+
+message DescribeLoadBalancersResultLoadBalancerEniAddresseResp {
+    string EniAddress = 1;
+    string EipId = 2;
+    string EipAddress = 3;
+}

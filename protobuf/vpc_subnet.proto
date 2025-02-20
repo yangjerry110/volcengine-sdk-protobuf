@@ -1,0 +1,81 @@
+syntax = "proto3";
+package vpc_subnet;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service VpcSubnet {
+    // DescribeSubnets
+    rpc DescribeSubnets(DescribeSubnetsReq) returns (DescribeSubnetsResp) {
+        option (api.http) = {
+            get: "/api/vpc_subnet/describe_subnets"
+            description: "DescribeSubnets"
+        };
+    }
+}
+
+message DescribeSubnetsReq {
+    optional string ZoneId = 1;
+    optional string VpcId = 2;
+    optional string SubnetName = 3;
+    optional string SubnetOwnerId = 4;
+    optional string RouteTableId = 5;
+    optional string ProjectName = 6;
+    optional bool IsDefault = 7;
+    optional int64 PageNumber = 8;
+    optional int64 PageSize = 9;
+    optional string NextToken = 10;
+    optional int64 MaxResults = 11;
+    repeated string SubnetIds = 12;
+    repeated DescribeSubnetsTagFilterReq TagFilters = 13;
+}
+
+message DescribeSubnetsTagFilterReq {
+    optional string Key = 1;
+    repeated string Values = 2;
+}
+
+message DescribeSubnetsResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeSubnetsResultResp Result = 2;
+}
+
+message DescribeSubnetsResultResp {
+    optional string RequestId = 1;
+    optional int64 TotalCount = 2;
+    optional int64 PageNumber = 3;
+    optional int64 PageSize = 4;
+    optional string NextToken = 5;
+    repeated DescribeSubnetsResultSubnetResp Subnets = 6;
+}
+
+message DescribeSubnetsResultSubnetResp {
+    optional string AccountId = 1;
+    optional string SubnetId = 2;
+    optional string VpcId = 3;
+    optional string Status = 4;
+    optional string CidrBlock = 5;
+    optional string Ipv6CidrBlock = 6;
+    optional string ZoneId = 7;
+    optional int64 AvailableIpAddressCount = 8;
+    optional string Description = 9;
+    optional string SubnetName = 10;
+    optional string CreationTime = 11;
+    optional string UpdateTime = 12;
+    optional int64 TotalIpv4Count = 13;
+    optional string NetworkAclId = 14;
+    optional bool IsDefault = 15;
+    optional string ProjectName = 16;
+    DescribeSubnetsResultSubnetRouteTableResp RouteTable = 17;
+    repeated DescribeSubnetsResultSubnetTagResp Tags = 18;
+}
+
+message DescribeSubnetsResultSubnetTagResp {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message DescribeSubnetsResultSubnetRouteTableResp {
+    optional string RouteTableId = 1;
+    optional string RouteTableType = 2;
+}

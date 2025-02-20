@@ -1,0 +1,316 @@
+syntax = "proto3";
+package ecs_instance;
+option go_package = "git.qutoutiao.net/devops/volcengine-sdk-protobuf/vo/protobuf";
+import "http.proto";
+import "api.proto";
+
+service EcsInstance {
+    // runInstances
+    rpc RunInstances(RunInstancesReq) returns (RunInstancesResp) {
+        option (api.http) = {
+            post: "/api/ecs_instance/run_instances"
+            body: "*"
+            description: "runInstances"
+        };
+    }
+
+    // DescribeInstances
+    rpc DescribeInstances(DescribeInstancesReq) returns (DescribeInstancesResp) {
+        option (api.http) = {
+            get: "/api/ecs_instance/describe_instances"
+            description: "DescribeInstances"
+        };
+    }
+
+    // stopInstance
+    rpc StopInstance(StopInstanceReq) returns (StopInstanceResp) {
+        option (api.http) = {
+            post: "/api/ecs_instace/stop_instance"
+            body: "*"
+            description: "StopInstance"
+        };
+    }
+
+    // StopInstances
+    rpc StopInstances(StopInstancesReq) returns (StopInstancesResp) {
+        option (api.http) = {
+            post: "/api/ecs_instance/stop_instances"
+            body: "*"
+            description: "StopInstances"
+        };
+    }
+
+    // ModifyInstanceSpec
+    rpc ModifyInstanceSpec(ModifyInstanceSpecReq) returns (ModifyInstanceSpecResp) {
+        option (api.http) = {
+            post: "/api/ecs_instance/modify_instance_spec"
+            body: "*"
+            description: "ModifyInstanceSpec"
+        };
+    }
+}
+
+message ModifyInstanceSpecReq {
+    optional string clientToken = 1;
+    optional bool DryRun = 2;
+    optional string InstanceId = 3;
+    optional string InstanceTypeId = 4;
+}
+
+message ModifyInstanceSpecResp {
+    ResponseMetadata ResponseMetadata = 1;
+    ModifyInstanceSpecResultResp Result = 2;
+}
+
+message ModifyInstanceSpecResultResp {
+    optional string InstanceId = 1;
+    optional string OrderId = 2;
+}
+
+message DescribeInstancesReq {
+    optional string DedicatedHostClusterId = 1;
+    optional string DedicatedHostId = 2;
+    optional string HpcClusterId = 3;
+    optional string InstanceChargeType = 4;
+    optional string InstanceName = 5;
+    optional string KeyPairName = 6;
+    optional int64 MaxResults = 7;
+    optional string NextToken = 8;
+    optional string PrimaryIpAddress = 9;
+    optional string ProjectName = 10;
+    optional string ScheduledInstanceId = 11;
+    optional string Status = 12;
+    optional string VpcId = 13;
+    optional string ZoneId = 14;
+    repeated string InstanceIds = 15;
+    repeated int64 DeploymentSetGroupNumbers = 16;
+    repeated string DeploymentSetIds = 17;
+    repeated string EipAddresses = 18;
+    repeated string InstanceTypeFamilies = 19;
+    repeated string InstanceTypeIds = 20;
+    repeated string Ipv6Addresses = 21;
+}
+
+message DescribeInstancesTagFiltersReq {
+    optional string key = 1;
+    repeated string Values = 2;
+}
+
+message DescribeInstancesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    DescribeInstancesResultResp Result = 2;
+}
+
+message DescribeInstancesResultResp {
+    optional string NextToken = 1;
+    repeated DescribeInstancesResultInstanceResp Instances = 2;
+}
+
+message DescribeInstancesResultInstanceResp {
+    optional int64 Cpus = 1;
+    optional string CreatedAt = 2;
+    optional int64 DeploymentSetGroupNumber = 3;
+    optional string DeploymentSetId = 4;
+    optional string Description = 5;
+    optional string ElasticScheduledInstanceType = 6;
+    optional string ExpiredAt = 7;
+    optional string Hostname = 8;
+    optional string HpcClusterId = 9;
+    optional string ImageId = 10;
+    optional string InstanceChargeType = 11;
+    optional string InstanceId = 12;
+    optional string InstanceName = 13;
+    optional string InstanceTypeId = 14;
+    optional string KeyPairId = 15;
+    optional string KeyPairName = 16;
+    optional int64 MemorySize = 17;
+    optional string OsName = 18;
+    optional string OsType = 19;
+    optional string ProjectName = 20;
+    optional string ScheduledInstanceId = 21;
+    optional float SpotPriceLimit = 22;
+    optional string SpotStrategy = 23;
+    optional string Status = 24;
+    optional string StoppedMode = 25;
+    optional string UpdatedAt = 26;
+    optional string Uuid = 27;
+    optional string VpcId = 28;
+    optional string ZoneId = 29;
+    repeated string RdmaIpAddresses = 30;
+    DescribeInstancesResultInstancePlacementResp Placement = 31;
+    DescribeInstancesResultInstanceEipAddressResp EipAddress = 32;
+    DescribeInstancesResultInstanceCpuOptionsResp CpuOptions = 33;
+    repeated DescribeInstancesResultInstanceLocalVolumesResp LocalVolumes = 34;
+    repeated DescribeInstancesResultInstanceTagResp Tags = 35;
+    repeated DescribeInstancesResultInstanceNetworkInterfacesResp NetworkInterfaces = 36;
+}
+
+message DescribeInstancesResultInstanceTagResp {
+    optional string key = 1;
+    optional string value = 2;
+}
+
+message DescribeInstancesResultInstancePlacementResp {
+    optional string Affinity = 1;
+    optional string DedicatedHostClusterId = 2;
+    optional string DedicatedHostId = 3;
+    optional string Tenancy = 4;
+}
+
+message DescribeInstancesResultInstanceNetworkInterfacesResp {
+    repeated string Ipv6Addresses = 1;
+    optional string MacAddress = 2;
+    optional string NetworkInterfaceId = 3;
+    optional string PrimaryIpAddress = 4;
+    optional string SubnetId = 5;
+    optional string Type = 6;
+    optional string VpcId = 7;
+}
+
+message DescribeInstancesResultInstanceLocalVolumesResp {
+    optional int64 Count = 1;
+    optional int64 Size = 2;
+    optional string VolumeType = 3;
+}
+
+message DescribeInstancesResultInstanceEipAddressResp {
+    optional string AllocationId = 1;
+    optional string IpAddress = 2;
+}
+
+message DescribeInstancesResultInstanceCpuOptionsResp {
+    optional int64 CoreCount = 1;
+    optional int64 ThreadsPerCore = 2;
+}
+
+message StopInstancesReq {
+    optional string ClientToken = 1;
+    optional bool DryRun = 2;
+    optional bool ForceStop = 3;
+    optional string StoppedMode = 4;
+    repeated string InstanceIds = 5;
+}
+
+message StopInstancesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    StopInstancesResultResp Result = 2;
+}
+
+message StopInstancesResultResp {
+    repeated StopInstancesResultOperationDetailsResp OperationDetails = 1;
+}
+
+message StopInstancesResultOperationDetailsResp {
+    optional string InstanceId = 1;
+    StopInstancesResultOperationDetailsErrResp Error = 2;
+}
+
+message StopInstancesResultOperationDetailsErrResp {
+    optional string Code = 1;
+    optional string Message = 2;
+}
+
+message StopInstanceReq {
+    optional string ClientToken = 1;
+    optional bool DryRun = 2;
+    optional bool ForceStop = 3;
+    optional string InstanceId = 4;
+    optional string StoppedMode = 5;
+}
+
+message StopInstanceResp {
+    ResponseMetadata ResponseMetadata = 1;
+    StopInstanceResultResp Result = 2;
+}
+
+message StopInstanceResultResp {}
+
+message RunInstancesReq {
+    optional bool AutoRenew = 1;
+    optional int64 AutoRenewPeriod = 2;
+    optional string ClientToken = 3;
+    optional int64 Count =4;
+    optional string CreditSpecification = 5;
+    optional int64 DeploymentSetGroupNumber = 6;
+    optional string DeploymentSetId = 7;
+    optional string Description = 8;
+    optional bool DryRun = 9;
+    optional string Hostname = 10;
+    optional string HpcClusterId = 11;
+    optional string ImageId = 12;
+    optional bool InstallRunCommandAgent = 13;
+    optional string InstanceChargeType = 14;
+    optional string InstanceName = 15;
+    optional string InstanceTypeId = 16;
+    optional bool KeepImageCredential = 17;
+    optional string KeyPairName = 18;
+    optional int64 MinCount = 19;
+    optional string Password = 20;
+    optional int64 Period = 21;
+    optional string PeriodUnit = 22;
+    optional string ProjectName = 23;
+    optional string SecurityEnhancementStrategy = 24;
+    optional float SpotPriceLimit = 25;
+    optional string SpotStrategy = 26;
+    optional int64 SuffixIndex = 27;
+    optional bool UniqueSuffix = 28;
+    optional string UserData = 29;
+    optional string ZoneId = 30;
+    optional RunInstancesPlacementReq Placement = 31;
+    repeated RunInstancesVolumesReq Volumes = 32;
+    repeated RunInstancesTagsReq Tags = 33;
+    repeated RunInstancesNetworkInterfacesReq NetworkInterfaces = 34;
+    repeated RunInstancesEipAddressReq EipAddres = 35;
+}
+
+message RunInstancesVolumesReq {
+    optional int64 Size = 1;
+    optional int64 ExtraPerformanceIOPS = 2;
+    optional int64 ExtraPerformanceThroughputMB = 3;
+    optional string ExtraPerformanceTypeId = 4;
+    optional string SnapshotId = 5;
+    optional string VolumeType = 6;
+    optional bool DeleteWithInstance = 7;
+}
+
+message RunInstancesTagsReq {
+    optional string Key = 1;
+    optional string Value = 2;
+}
+
+message RunInstancesPlacementReq {
+    optional string Affinity = 1;
+    optional string DedicatedHostClusterId = 2;
+    optional string DedicatedHostId = 3;
+    optional string Tenancy = 4;
+}
+
+message RunInstancesNetworkInterfacesReq {
+    repeated string SecurityGroupIds = 1;
+    optional string SubnetId = 2;
+    repeated int64 Ipv6AddressCount = 3;
+    repeated string PrimaryIpAddress=  4;
+    repeated string PrivateIpAddresses = 5;
+}
+
+message RunInstancesEipAddressReq {
+    optional int64 BandwidthMbps = 1;
+    optional string BandwidthPackageId = 2;
+    optional string ChargeType = 3;
+    optional string ISP = 4;
+    optional bool ReleaseWithInstance = 5;
+    optional int64 SecurityProtectionInstanceId = 6;
+    repeated string SecurityProtectionTypes = 7;
+}
+
+message RunInstancesResp {
+    ResponseMetadata ResponseMetadata = 1;
+    RunInstancesResultResp Result = 2;
+}
+
+message RunInstancesResultResp {
+    repeated string InstanceIds = 1;
+}
+
+
+
